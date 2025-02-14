@@ -6,17 +6,19 @@
 </head>
 <body>
 
-<input type="text" id="name" placeholder="Enter user's name">
-<input type="text" id="username" placeholder="Enter username">
-<input type="password" id="password" placeholder="Enter password">
-<input type="email" id="email" placeholder="Enter email">
-<input type="number" id="id" placeholder="Enter id (must be 7 digits)">
-Enter id (must be 7 digits)
+<p><a href="/admin_dashboard">Back to Admin dashboard</a></p>
+
+<input type="text" id="name" placeholder="Enter user's name"><br>
+<input type="text" id="username" placeholder="Enter username"><br>
+<input type="password" id="password" placeholder="Enter password"><br>
+<input type="email" id="email" placeholder="Enter email"><br>
+<input type="number" id="id" placeholder="Enter id (must be 7 digits)"><br>
+Enter id (must be 7 digits)<br>
 <select id="type">
     <option value="Admin">Admin</option>
     <option value="Employee">Employee</option>
-</select>
-<button  type="button" onclick="create_user()">Create User</button>
+</select><br>
+<button  type="button" onclick="create_user()">Create User</button><br>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

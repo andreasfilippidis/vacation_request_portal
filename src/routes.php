@@ -32,12 +32,23 @@ Routing::get("/login",function(){
 });
 
 Routing::get("/admin_dashboard/userList",function(){
+
+    session_start();
+
+    if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== 'Admin') {
+        header("Location: /login");
+        exit();
+    }
+
+
+    require_once __DIR__ . "/classes/Admin.php";
+
+
+    $users =Admin::get_users();
+
     require_once __DIR__ . "/views/user_list.php";
 });
 
-Routing::post("/admin_dashboard/userList",function(){
-
-});
 
 routing::get("/admin_dashboard/createUser",function(){
     require_once __DIR__ . "/views/create_user.php";
@@ -45,12 +56,14 @@ routing::get("/admin_dashboard/createUser",function(){
 
 Routing::post("/admin_dashboard/createUser", function() {
     header("Content-Type: application/json");
-    //echo json_encode(["status" => "success", "message" => "User created!"]);
-    // Ensure the user is logged in and is an admin
-    /*if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "admin") {
+
+    session_start();
+
+
+    if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         echo json_encode(["status" => "error", "message" => "Unauthorized"]);
         return;
-    }*/
+    }
 
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -116,13 +129,13 @@ Routing::post("/logout", function() {
 
 Routing::get("/admin_dashboard", function() {
     session_start();
-    // Check if the user is logged in and is an Admin
+
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         header("Location: /login");
         exit();
     }
     //print($_SESSION['logged_in'] . "<br>");
-    // Include the secure admin dashboard views
+
     require_once __DIR__ . "/../src/views/admin_dashboard.php";
 });
 
@@ -134,7 +147,64 @@ Routing::get("/employee_dashboard", function() {
         header("Location: /login");
         exit();
     }
-    //print($_SESSION['logged_in'] . "<br>");
-    // Include the secure admin dashboard views
+
+
     require_once __DIR__ . "/../src/views/employee_dashboard.php";
+});
+
+Routing::get("/admin_dashboard/updateUser", function() {
+
+    session_start();
+
+    if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
+        header("Location: /login");
+        exit();
+    }
+
+    $id = $_GET['id'] ?? null;
+
+
+    require_once __DIR__ . "/views/update_user.php";
+
+
+});
+
+Routing::post("/admin_dashboard/updateUser", function() {
+    session_start();
+
+    if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
+        header("Location: /login");
+        exit();
+    }
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+
+
+    //require_once __DIR__ . "/views/update_user.php";
+
+
+});
+
+Routing::post("/admin_dashboard/deleteUser", function() {
+    session_start();
+    header("Content-Type: application/json");
+
+    if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
+        header("Location: /login");
+        exit();
+    }
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+
+    $response= Admin::delete_user($id);
+
+    if ($response) {
+        echo json_encode(["status" => "success", "message" => "User deleted successfully"]);
+
+    } else {
+        echo json_encode(["status" => "error", "message" => "You can't delete admin users"]);
+
+    }
 });

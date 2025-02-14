@@ -20,5 +20,34 @@ class Admin extends User
         }
         return "Failed to create user.";
     }
+
+    public static function get_users(){
+        $db = db_connection::getInstance();
+
+
+        $stmt = $db->query("SELECT id,name, email, type FROM Users");
+        return $stmt->fetchAll();
+
+    }
+
+    public static function delete_user(int $id){
+        $db= db_connection::getInstance();
+        $sql = "DELETE FROM Users WHERE id = :id AND type <> 'Admin'";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+
+        try {
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\PDOException $e) {
+            return "Error deleting user: " . $e->getMessage();
+        }
+    }
 }
+
 
