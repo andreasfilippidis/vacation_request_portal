@@ -1,9 +1,41 @@
-Steps to run my project:
-1) clone this repository
-2) have docker, docker-compose installed
-3) inside my project run this command: docker-compose up -d
+# Steps to run the project
 
-   Check if everything's working: docker ps
+## Clone the repository to your local machine
 
-http://localhost:8081 = Main App
-http://localhost:8080 → Database
+````bash
+git clone https://github.com/empyreanq/vacation_request_portal
+cd vacation_request_portal
+````
+
+## Install docker.
+
+
+
+
+## Launch docker: 
+
+````bash
+docker-compose up --build -d
+````
+
+## Troubleshooting
+````bash
+docker ps
+````
+
+## Visit the app
+
+````bash
+http://localhost:8081
+````
+
+## Database
+````bash
+http://localhost:8080
+````
+
+## Credentials
+````bash
+Admin: username:aaa, password:aaa
+Employee: username:bbb, password:bbb
+````
