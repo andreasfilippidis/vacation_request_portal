@@ -7,3 +7,6 @@ Steps to run my project:
 
 http://localhost:8081 = Main App
 http://localhost:8080 = Database
+
+admin username:aaa, password:aaa
+employee username:bbb, password:bbb
