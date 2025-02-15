@@ -31,9 +31,9 @@
             <td><form action="/admin_dashboard/updateUser" method="get">
                     <!-- The hidden field holds the user ID -->
                     <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
-                    <button type="submit">Update User</button>
+                    <button type="submit">Edit</button>
                 </form></td>
-            <td><form onsubmit="delete_user(<?= htmlspecialchars($user['id']) ?>)" action="/admin_dashboard/deleteUser" method="post">
+            <td><form onsubmit="delete_user(<?= htmlspecialchars($user['id']) ?>)">
                     <button type="submit">Delete</button>
                 </form></td>
         </tr>
