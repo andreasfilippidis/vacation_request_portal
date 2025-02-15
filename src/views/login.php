@@ -18,7 +18,7 @@
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        axios.post('/login', { username, password })
+        axios.post('/login', {username, password})
             .then(response => {
                 console.log(response.data.user_type);
                 if (response.data.status === "success") {

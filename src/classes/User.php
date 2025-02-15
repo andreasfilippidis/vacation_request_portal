@@ -6,7 +6,7 @@ require_once __DIR__ . "/../autoload.php";
 
 class User
 {
- private string $name;
+    private string $name;
     private string $username;
     private string $password;
     private string $email;
@@ -15,7 +15,8 @@ class User
     protected $db;
 
 
-    public static function user_login($username, $password) {
+    public static function user_login($username, $password)
+    {
         $db = db_connection::getInstance();
 
         $stmt = $db->prepare("SELECT * FROM Users WHERE username = ?");

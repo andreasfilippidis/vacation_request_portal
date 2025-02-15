@@ -32,10 +32,10 @@
 <br>
 
 <script>
-    function updateuser(id,column,value) {
+    function updateuser(id, column, value) {
         event.preventDefault();
 
-        axios.post('/admin_dashboard/updateUser', { id, column,value})
+        axios.post('/admin_dashboard/updateUser', {id, column, value})
             .then(response => {
 
                 if (response.data.status === "success") {

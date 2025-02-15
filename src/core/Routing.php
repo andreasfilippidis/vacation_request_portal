@@ -3,18 +3,22 @@
 namespace src\core;
 require_once __DIR__ . "/../autoload.php";
 
-class Routing {
+class Routing
+{
     private static array $routes = [];
 
-    public static function get(string $path, callable $callback): void {
+    public static function get(string $path, callable $callback): void
+    {
         self::$routes['GET'][$path] = $callback;
     }
 
-    public static function post(string $path, callable $callback): void {
+    public static function post(string $path, callable $callback): void
+    {
         self::$routes['POST'][$path] = $callback;
     }
 
-    public static function resolve(): void {
+    public static function resolve(): void
+    {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 

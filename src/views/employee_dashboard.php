@@ -10,10 +10,12 @@
 
 <form action="/employee_dashboard/createRequest" method="get">
     <button type="submit">Create Vacation Request</button>
-</form><br>
+</form>
+<br>
 <form action="/employee_dashboard/viewRequests" method="get">
     <button type="submit">View vacation request list</button>
-</form><br>
+</form>
+<br>
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>

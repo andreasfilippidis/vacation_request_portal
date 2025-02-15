@@ -1,6 +1,7 @@
 <?php
 
 namespace src\classes;
+
 use PDO;
 use PDOException;
 
@@ -11,20 +12,22 @@ class Admin extends User
 {
 
 
-    public static function create_user(string $name, string $username, string $password, string $email, int $id, string $type){
+    public static function create_user(string $name, string $username, string $password, string $email, int $id, string $type)
+    {
         $db = db_connection::getInstance();
 
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
 
         // Insert user into database
         $stmt = $db->prepare("INSERT INTO Users (name, username, password,email,id, type) VALUES (?, ?, ?, ?,?,?)");
-        if ($stmt->execute([$name,$username,$hashedPassword, $email, $id, $type])) {
+        if ($stmt->execute([$name, $username, $hashedPassword, $email, $id, $type])) {
             return "User '$name' created successfully!";
         }
         return "Failed to create user.";
     }
 
-    public static function get_users(){
+    public static function get_users()
+    {
         $db = db_connection::getInstance();
 
 
@@ -33,12 +36,13 @@ class Admin extends User
 
     }
 
-    public static function update_user(int $id,string $column,string $value){
+    public static function update_user(int $id, string $column, string $value)
+    {
         $db = db_connection::getInstance();
         $stmt = $db->prepare("UPDATE Users SET {$column}= :value WHERE id= :id AND type <> 'Admin'");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
-        if($column =="password"){
+        if ($column == "password") {
             $value = password_hash($value, PASSWORD_ARGON2ID);
         }
 
@@ -59,8 +63,9 @@ class Admin extends User
 
     }
 
-    public static function delete_user(int $id){
-        $db= db_connection::getInstance();
+    public static function delete_user(int $id)
+    {
+        $db = db_connection::getInstance();
         $sql = "DELETE FROM Users WHERE id = :id AND type <> 'Admin'";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
@@ -78,7 +83,8 @@ class Admin extends User
         }
     }
 
-    public static function manage_requests(){
+    public static function manage_requests()
+    {
         $db = db_connection::getInstance();
 
         $stmt = $db->prepare("
@@ -91,18 +97,18 @@ class Admin extends User
         FROM Vacation_request v
         JOIN Users u ON v.requester_id = u.id
         WHERE v.status = 'Pending'
-    ");
+        ");
 
-        $stmt->execute();
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             return $stmt->fetchAll();
-        }else{
-            return false;
+        } else {
+            return [];
         }
     }
 
-    public static function evaluate_request(int $id,string $eval){
+    public static function evaluate_request(int $id, string $eval)
+    {
         $db = db_connection::getInstance();
 
 

@@ -9,9 +9,11 @@ use src\classes\Employee;
 use src\core\Routing;
 
 
-Routing::get("/",function(){
-    session_start();
+Routing::get("/", function () {
+    header("Location: /login");
+});
 
+Routing::get("/login", function () {
 
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         if ($_SESSION['user_type'] === "Admin") {
@@ -23,29 +25,11 @@ Routing::get("/",function(){
         }
     }
 
-    // If no active session, show the public homepage
-    require_once __DIR__ . "/../html/views/home.php";
+    require_once __DIR__ . "/views/login.php";
 });
 
-Routing::get("/login",function(){
-    session_start();
+Routing::get("/admin_dashboard/userList", function () {
 
-    if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-        if ($_SESSION['user_type'] === "Admin") {
-            header("Location: /admin_dashboard");
-            exit();
-        } elseif ($_SESSION['user_type'] === "Employee") {
-            header("Location: /employee_dashboard");
-            exit();
-        }
-    }
-
-    require_once __DIR__ . "/../html/views/login.php";
-});
-
-Routing::get("/admin_dashboard/userList",function(){
-
-    session_start();
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== 'Admin') {
         header("Location: /login");
@@ -56,20 +40,18 @@ Routing::get("/admin_dashboard/userList",function(){
     require_once __DIR__ . "/classes/Admin.php";
 
 
-    $users =Admin::get_users();
+    $users = Admin::get_users();
 
     require_once __DIR__ . "/views/user_list.php";
 });
 
 
-routing::get("/admin_dashboard/createUser",function(){
+routing::get("/admin_dashboard/createUser", function () {
     require_once __DIR__ . "/views/create_user.php";
 });
 
-Routing::post("/admin_dashboard/createUser", function() {
+Routing::post("/admin_dashboard/createUser", function () {
     header("Content-Type: application/json");
-
-    session_start();
 
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
@@ -78,7 +60,6 @@ Routing::post("/admin_dashboard/createUser", function() {
     }
 
     $data = json_decode(file_get_contents("php://input"), true);
-
 
 
     $name = $data['name'] ?? '';
@@ -91,23 +72,20 @@ Routing::post("/admin_dashboard/createUser", function() {
     echo json_encode(["name" => $name, "username" => $username, "password" => $password, "email" => $email, "id" => $id, "type" => $type]);
 
 
-
     if (!$name || !$username || !$password || !$email || !$id || !$type) {
         echo json_encode(["status" => "error", "message" => "Missing required fields"]);
         return;
     }
 
-    $response = Admin::create_user($name,$username,$password,$email,$id,$type);
+    $response = Admin::create_user($name, $username, $password, $email, $id, $type);
 
     echo json_encode(["status" => "success", "message" => $response]);
 
 });
 
 
-Routing::post("/login", function() {
-    session_start();
+Routing::post("/login", function () {
     header("Content-Type: application/json");
-
 
 
     $data = json_decode(file_get_contents("php://input"), true);
@@ -119,7 +97,7 @@ Routing::post("/login", function() {
         return;
     }
     //print("Hello");
-    $response = User::user_login($username,$password);
+    $response = User::user_login($username, $password);
 
     if ($response) {
         $_SESSION['logged_in'] = true;
@@ -136,15 +114,13 @@ Routing::post("/login", function() {
 
 });
 
-Routing::post("/logout", function() {
-    session_start();
+Routing::post("/logout", function () {
     session_destroy();
     header("Location: /");
     exit();
 });
 
-Routing::get("/admin_dashboard", function() {
-    session_start();
+Routing::get("/admin_dashboard", function () {
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         header("Location: /login");
@@ -156,8 +132,7 @@ Routing::get("/admin_dashboard", function() {
 });
 
 
-Routing::get("/employee_dashboard", function() {
-    session_start();
+Routing::get("/employee_dashboard", function () {
 
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Employee") {
@@ -169,10 +144,8 @@ Routing::get("/employee_dashboard", function() {
     require_once __DIR__ . "/../src/views/employee_dashboard.php";
 });
 
-Routing::get("/admin_dashboard/updateUser", function() {
+Routing::get("/admin_dashboard/updateUser", function () {
 
-
-    session_start();
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         header("Location: /login");
@@ -187,8 +160,7 @@ Routing::get("/admin_dashboard/updateUser", function() {
 
 });
 
-Routing::post("/admin_dashboard/updateUser", function() {
-    session_start();
+Routing::post("/admin_dashboard/updateUser", function () {
     header("Content-Type: application/json");
 
 
@@ -203,10 +175,10 @@ Routing::post("/admin_dashboard/updateUser", function() {
     $value = $data['value'];
 
 
-    $response= Admin::update_user($id, $column, $value);
+    $response = Admin::update_user($id, $column, $value);
 
     if ($response) {
-        echo json_encode(["status" => "success", "message" => "Successfully updated user's ". $column]);
+        echo json_encode(["status" => "success", "message" => "Successfully updated user's " . $column]);
 
     } else {
         echo json_encode(["status" => "error", "message" => "Couldn't update user's $column as he is an admin"]);
@@ -219,8 +191,7 @@ Routing::post("/admin_dashboard/updateUser", function() {
 
 });
 
-Routing::post("/admin_dashboard/deleteUser", function() {
-    session_start();
+Routing::post("/admin_dashboard/deleteUser", function () {
     header("Content-Type: application/json");
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
@@ -231,7 +202,7 @@ Routing::post("/admin_dashboard/deleteUser", function() {
     $data = json_decode(file_get_contents("php://input"), true);
     $id = $data['id'];
 
-    $response= Admin::delete_user($id);
+    $response = Admin::delete_user($id);
 
     if ($response) {
         echo json_encode(["status" => "success", "message" => "User deleted successfully"]);
@@ -243,8 +214,7 @@ Routing::post("/admin_dashboard/deleteUser", function() {
 });
 
 
-routing::get("/employee_dashboard/createRequest", function() {
-    session_start();
+Routing::get("/employee_dashboard/createRequest", function () {
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Employee") {
         header("Location: /login");
@@ -255,21 +225,20 @@ routing::get("/employee_dashboard/createRequest", function() {
     require_once __DIR__ . "/views/create_request.php";
 });
 
-routing::post("/employee_dashboard/createRequest", function() {
+Routing::post("/employee_dashboard/createRequest", function () {
     header("Content-Type: application/json");
 
-    session_start();
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Employee") {
         header("Location: /login");
         exit();
     }
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $datefrom=$data['dateFrom'] ?? null;
-    $dateto=$data['dateTo'] ?? null;
-    $reason=$data['reason'] ?? null;
+    $datefrom = $data['dateFrom'] ?? null;
+    $dateto = $data['dateTo'] ?? null;
+    $reason = $data['reason'] ?? null;
 
-    $response= Employee::create_request($datefrom,$dateto,$reason,$_SESSION['id']);
+    $response = Employee::create_request($datefrom, $dateto, $reason, $_SESSION['id']);
 
     if ($response) {
         echo json_encode(["status" => "success", "message" => "Vacation request submitted successfully"]);
@@ -281,22 +250,20 @@ routing::post("/employee_dashboard/createRequest", function() {
 
 });
 
-routing::get("/employee_dashboard/viewRequests", function() {
-    session_start();
+Routing::get("/employee_dashboard/viewRequests", function () {
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Employee") {
         header("Location: /login");
         exit();
     }
 
-    $requests=Employee::view_requests();
+    $requests = Employee::view_requests();
 
     require_once __DIR__ . "/views/view_requests.php";
 });
 
-Routing::post("/employee_dashboard/deleteRequest", function() {
+Routing::post("/employee_dashboard/deleteRequest", function () {
     header("Content-Type: application/json");
-    session_start();
 
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Employee") {
@@ -305,11 +272,11 @@ Routing::post("/employee_dashboard/deleteRequest", function() {
     }
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $requester_id=$data['requester_id'] ?? null;
-    $request_id=$data['vacation_id'] ?? null;
-    $status=$data['state'] ?? null;
+    $requester_id = $data['requester_id'] ?? null;
+    $request_id = $data['vacation_id'] ?? null;
+    $status = $data['state'] ?? null;
 
-    $response= Employee::delete_request($requester_id,$request_id,$status,$_SESSION['id']);
+    $response = Employee::delete_request($requester_id, $request_id, $status, $_SESSION['id']);
 
     if ($response['success']) {
         echo json_encode(["status" => "success", "message" => $response['message']]);
@@ -320,37 +287,35 @@ Routing::post("/employee_dashboard/deleteRequest", function() {
     }
 });
 
-Routing::get("/admin_dashboard/manageRequests", function() {
-    session_start();
+Routing::get("/admin_dashboard/manageRequests", function () {
 
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         header("Location: /login");
         exit();
     }
 
-    $requests=Admin::manage_requests();
+    $requests = Admin::manage_requests();
 
     require_once __DIR__ . "/views/manage_requests.php";
 });
 
-routing::post("/admin_dashboard/manageRequests", function() {
+Routing::post("/admin_dashboard/manageRequests", function () {
     header("Content-Type: application/json");
 
-    session_start();
     if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== "Admin") {
         header("Location: /login");
         exit();
     }
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $request_id=$data['request_id'] ?? null;
-    $evaluation=$data['evaluation'] ?? null;
+    $request_id = $data['request_id'] ?? null;
+    $evaluation = $data['evaluation'] ?? null;
 
-    $response=Admin::evaluate_request($request_id,$evaluation);
+    $response = Admin::evaluate_request($request_id, $evaluation);
 
     if ($response) {
         echo json_encode(["status" => "success", "message" => $response['message']]);
-    }else{
+    } else {
         echo json_encode(["status" => "error", "message" => $response['message']]);
     }
 

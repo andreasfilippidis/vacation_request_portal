@@ -22,20 +22,24 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach($users as $user): ?>
+    <?php foreach ($users as $user): ?>
         <tr>
             <td><?= htmlspecialchars($user['id']) ?></td>
             <td><?= htmlspecialchars($user['name']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['type']) ?></td>
-            <td><form action="/admin_dashboard/updateUser" method="get">
+            <td>
+                <form action="/admin_dashboard/updateUser" method="get">
                     <!-- The hidden field holds the user ID -->
                     <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
                     <button type="submit">Edit</button>
-                </form></td>
-            <td><form onsubmit="delete_user(<?= htmlspecialchars($user['id']) ?>)">
+                </form>
+            </td>
+            <td>
+                <form onsubmit="delete_user(<?= htmlspecialchars($user['id']) ?>)">
                     <button type="submit">Delete</button>
-                </form></td>
+                </form>
+            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>
@@ -45,7 +49,7 @@
 <script>
     function update_user(id) {
         event.preventDefault();
-        axios.post('/admin_dashboard/updateUser', { id })
+        axios.post('/admin_dashboard/updateUser', {id})
             .then(response => {
                 if (response.data.status === "success") {
                     alert(response.data.message);
@@ -59,7 +63,7 @@
     function delete_user(id) {
         event.preventDefault();
 
-        axios.post('/admin_dashboard/deleteUser', { id })
+        axios.post('/admin_dashboard/deleteUser', {id})
             .then(response => {
                 if (response.data.status === "success") {
                     //alert(response.data.message);

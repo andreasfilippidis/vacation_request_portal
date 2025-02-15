@@ -1,13 +1,17 @@
 <?php
+
 namespace src\classes;
+
 use PDO;
 use PDOException;
 
-class db_connection {
+class db_connection
+{
     private static $instance = null;
     private $pdo;
 
-    private function __construct() {
+    private function __construct()
+    {
         try {
             $this->pdo = new PDO("mysql:host=db;dbname=assessment_db", "root", "root", [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -18,7 +22,8 @@ class db_connection {
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }

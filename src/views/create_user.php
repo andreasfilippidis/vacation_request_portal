@@ -18,7 +18,8 @@ Enter id (must be 7 digits)<br>
     <option value="Admin">Admin</option>
     <option value="Employee">Employee</option>
 </select><br>
-<button  type="button" onclick="create_user()">Create User</button><br>
+<button type="button" onclick="create_user()">Create User</button>
+<br>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

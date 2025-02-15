@@ -22,17 +22,20 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach($requests as $request): ?>
+    <?php foreach ($requests as $request): ?>
         <tr>
             <td><?= htmlspecialchars($request['id']) ?></td>
             <td><?= htmlspecialchars($request['requester_name']) ?></td>
             <td><?= htmlspecialchars($request['date_from']) ?></td>
             <td><?= htmlspecialchars($request['date_to']) ?></td>
             <td><?= htmlspecialchars($request['status']) ?></td>
-            <td><form onsubmit="evaluate_request(<?= htmlspecialchars($request['id']) ?>,'Approved')">
+            <td>
+                <form onsubmit="evaluate_request(<?= htmlspecialchars($request['id']) ?>,'Approved')">
                     <button type="submit">Approve</button>
-                </form> </td>
-            <td><form onsubmit="evaluate_request(<?= htmlspecialchars($request['id']) ?>, 'Rejected')">
+                </form>
+            </td>
+            <td>
+                <form onsubmit="evaluate_request(<?= htmlspecialchars($request['id']) ?>, 'Rejected')">
                     <button type="submit">Reject</button>
                 </form>
             </td>
@@ -43,9 +46,9 @@
 
 
 <script>
-    function evaluate_request(request_id,evaluation) {
+    function evaluate_request(request_id, evaluation) {
         event.preventDefault();
-        axios.post('/admin_dashboard/manageRequests', { request_id,evaluation })
+        axios.post('/admin_dashboard/manageRequests', {request_id, evaluation})
             .then(response => {
                 if (response.data.status === "success") {
                     alert(response.data.message);

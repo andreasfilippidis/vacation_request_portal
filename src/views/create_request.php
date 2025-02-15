@@ -11,7 +11,8 @@
 <h2>Request Vacation</h2>
 
 <p><a href="/employee_dashboard">Back to Employee Dashboard</a></p><br>
-<form id="vacationForm" onsubmit="create_request(document.getElementById('dateFrom').value,document.getElementById('dateTo').value,document.getElementById('reason').value)">
+<form id="vacationForm"
+      onsubmit="create_request(document.getElementById('dateFrom').value,document.getElementById('dateTo').value,document.getElementById('reason').value)">
     <label for="dateFrom">Date From:</label>
     <input type="date" id="dateFrom" required>
     <br><br>
@@ -28,9 +29,9 @@
 </form>
 
 <script>
-    function create_request(dateFrom,dateTo,reason){
+    function create_request(dateFrom, dateTo, reason) {
         event.preventDefault();
-        axios.post('/employee_dashboard/createRequest', {dateFrom,dateTo,reason})
+        axios.post('/employee_dashboard/createRequest', {dateFrom, dateTo, reason})
             .then(response => {
                 if (response.data.status === "success") {
                     alert(response.data.message);
