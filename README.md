@@ -6,4 +6,4 @@ Steps to run my project:
    Check if everything's working: docker ps
 
 http://localhost:8081 = Main App
-http://localhost:8080 → Database
+http://localhost:8080 = Database
