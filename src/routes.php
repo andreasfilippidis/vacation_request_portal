@@ -69,8 +69,6 @@ Routing::post("/admin_dashboard/createUser", function () {
     $id = $data['id'] ?? '';
     $type = $data['type'] ?? '';
 
-    echo json_encode(["name" => $name, "username" => $username, "password" => $password, "email" => $email, "id" => $id, "type" => $type]);
-
 
     if (!$name || !$username || !$password || !$email || !$id || !$type) {
         echo json_encode(["status" => "error", "message" => "Missing required fields"]);
@@ -79,7 +77,11 @@ Routing::post("/admin_dashboard/createUser", function () {
 
     $response = Admin::create_user($name, $username, $password, $email, $id, $type);
 
-    echo json_encode(["status" => "success", "message" => $response]);
+    if ($response['status']=="success") {
+        echo json_encode(["status" => "success", "message" => $response['message']]);
+    } else {
+        echo json_encode(["status" => "error", "message" => $response['message']]);
+    }
 
 });
 

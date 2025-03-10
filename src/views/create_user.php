@@ -42,7 +42,13 @@ Enter id (must be 7 digits)<br>
             type: type
 
         })
-            .then(response => console.log("Response:", response.data))
+            .then(response => {
+                if (response.data.status === "success") {
+                    alert(response.data.message);
+                } else {
+                    alert(response.data.message);
+                }
+            })
             .catch(error => console.error("Error:", error));
     }
 </script>

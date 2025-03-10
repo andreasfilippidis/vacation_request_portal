@@ -19,11 +19,17 @@ class Admin extends User
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
 
         // Insert user into database
-        $stmt = $db->prepare("INSERT INTO Users (name, username, password,email,id, type) VALUES (?, ?, ?, ?,?,?)");
-        if ($stmt->execute([$name, $username, $hashedPassword, $email, $id, $type])) {
-            return "User '$name' created successfully!";
-        }
-        return "Failed to create user.";
+        try {
+            $stmt = $db->prepare("INSERT INTO Users (name, username, password,email,id, type) VALUES (?, ?, ?, ?,?,?)");
+            if ($stmt->execute([$name, $username, $hashedPassword, $email, $id, $type])) {
+                return ["status" => "success", "message" => "User '$name' created successfully!"];
+            }
+        }catch(PDOException $e){
+                return ["status" => "error", "message" => "Failed to create user!"];
+            }
+
+        //}
+        //return ["status" => "error", "message" => "Failed to create user '$name'."];
     }
 
     public static function get_users()
