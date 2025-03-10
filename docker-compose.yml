@@ -19,14 +19,14 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: assessment_db
+      MYSQL_DATABASE: vacation_request_db
       MYSQL_USER: my_user
       MYSQL_PASSWORD: my_password
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/assessment_db.sql:/docker-entrypoint-initdb.d/assessment_db.sql
+      - ./database/vacation_request_db.sql:/docker-entrypoint-initdb.d/vacation_request_db.sql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
