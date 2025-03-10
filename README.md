@@ -38,4 +38,5 @@ http://localhost:8080
 ````bash
 Admin: username:aaa, password:aaa
 Employee: username:bbb, password:bbb
+database: username:root, password:root
 ````
