@@ -1,6 +1,6 @@
 <?php
 
-namespace src\core;
+namespace backend\src\core;
 require_once __DIR__ . "/../autoload.php";
 
 class Routing

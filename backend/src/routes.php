@@ -3,10 +3,10 @@
 
 require_once __DIR__ . "/autoload.php";
 
-use src\classes\Admin;
-use src\classes\User;
-use src\classes\Employee;
-use src\core\Routing;
+use backend\src\classes\Admin;
+use backend\src\classes\Employee;
+use backend\src\classes\User;
+use backend\src\core\Routing;
 
 
 Routing::get("/", function () {

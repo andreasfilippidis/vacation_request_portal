@@ -1,6 +1,6 @@
 <?php
 
-use src\core\Routing;
+use backend\src\core\Routing;
 
 require_once __DIR__ . "/../src/autoload.php";
 

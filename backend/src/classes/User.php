@@ -1,6 +1,7 @@
 <?php
 
-namespace src\classes;
+namespace backend\src\classes;
+
 require_once __DIR__ . "/../autoload.php";
 
 
